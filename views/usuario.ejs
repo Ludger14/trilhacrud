@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trilhas-RJ</title>
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>   
+    <div class="wraper-table">
+        <table>
+            <tr>
+                <td>Id</td>
+                <td>Nome</td>			
+                <td>Email</td>
+                <td>Telefone</td>
+                <td>Passeio</td> 
+                <td>Editar</td>  
+                <td>Deletar</td>                     
+            </tr>                    
+            <tr>
+                <td><%= id %></td>
+                <td><%= nome %></td>			
+                <td><%= email %></td>
+                <td><%= telefone %></td>
+                <td><%= passeio %></td>     
+                <td><a class="btn edit" href="editar-usuario.html"><i class="fa fa-pencil"></i> Editar</a></td>
+                <td><a actionBtn="delete" class="btn delete" href="#"><i class="fa fa-times"></i> Excluir</a></td>                   
+            </tr>                
+        </table>
+    </div>            
+</body>
+</html>
