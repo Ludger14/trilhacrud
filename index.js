@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const { Sequelize, DataTypes } = require('sequelize')
 const UserModel = require('./models/usuarios')
-
+const cors = require('cors')
 const sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: 'crudtrilha.db'
@@ -13,6 +13,7 @@ const users = UserModel(sequelize, DataTypes)
 app.set('view engine', 'ejs')
 // We need to parse JSON coming from requests
 app.use(express.json())
+app.use(cors())
 
 // Create user
 app.post('/usuario', async(req, res) => {
@@ -33,7 +34,7 @@ app.post('/usuario', async(req, res) => {
 // List all users
 app.get('/usuario', async(req, res) => {
     const allUsers = await users.findAll()    
-    res.json({ allUsers })
+    res.json({'allUsers': allUsers })
 })
 
 // Show usern
