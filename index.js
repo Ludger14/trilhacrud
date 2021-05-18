@@ -37,12 +37,12 @@ app.get('/usuario', async(req, res) => {
     res.json({'allUsers': allUsers })
 })
 
-// Show usern
+// Show user
 app.get('/usuario/:id', async(req, res) => {
     const userId = req.params.id
     const user = await users.findByPk(userId)
 
-    res.render('usuario', { id: user.id, nome: user.nome, email: user.email, telefone: user.telefone, passeio: user.passeio })
+    res.send({ id: user.id, nome: user.nome, email: user.email, telefone: user.telefone, passeio: user.passeio })
 })
 
 // Update user
@@ -57,7 +57,7 @@ app.put('/usuario/:id', async(req, res) => {
         telefone: body.telefone,
         passeio: body.passeio
       })    
-      res.send("Foi atualizado com sucesso.")
+      res.send({ Mensagem: "Foi atualizado com sucesso."})
     } catch (error) {
       console.log(error);
     } 
