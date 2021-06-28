@@ -1,4 +1,6 @@
 const express = require('express')
+const multer = require('multer')
+const upload = multer({ dest: '../projetoFinal/trilhas/src/assets/img' })
 const app = express()
 const { Sequelize, DataTypes } = require('sequelize')
 const UserModel = require('./models/usuarios')
@@ -9,6 +11,7 @@ const sequelize = new Sequelize({
     storage: 'crudtrilha.db'
 })
 
+
 const users = UserModel(sequelize, DataTypes)
 const walk = PasseioModel(sequelize, DataTypes)
 
@@ -16,6 +19,40 @@ app.set('view engine', 'ejs')
 // We need to parse JSON coming from requests
 app.use(express.json())
 app.use(cors())
+/*
+app.post('/stats', upload.single('imagem'), function (req, res) {
+   // req.file is the name of your file in the form above, here 'uploaded_file'
+   // req.body will hold the text fields, if there were any 
+   console.log(req.file, req.body)
+});
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '/tmp/my-uploads')
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    cb(null, file.fieldname + '-' + uniqueSuffix)
+  }
+})
+
+var upload = multer({ storage: storage })*/
+
+app.post('/photos/upload', upload.array('photos', 12), function (req, res, next){
+  // req.file is the 'avatar' file
+  // req.body will holk the text fields, if there were any
+})
+
+var cpUpload = upload.fields([{ name: 'avatar', maxCount: 1}, { name: 'gallery', maxCount: 8}])
+app.post('/cool-profile', cpUpload, function(req, res, next){
+  // req.files is an object (String -> Array) where fieldname is the key, and the value is array of files
+  //
+  // e.g.
+  //  req.files['avatar'][0] -> File
+  //  req.files['gallery'] -> Array
+  //
+  // req.body will contain the text fields, if there were any
+})
 
 // Create user
 app.post('/usuario', async(req, res) => {
@@ -34,12 +71,13 @@ app.post('/usuario', async(req, res) => {
   })
 
   // Create walk
-app.post('/passeio', async(req, res) => {
+app.post('/passeio', upload.single('imagem'), async(req, res) => {
+  console.log(req.file);
   try {
     const body = req.body  
     const walkCreate = await walk.create({
       title: body.title,
-      imagem: body.imagem,
+      imagem: req.file.filename,
       encontro: body.encontro,
       tempo: body.tempo,  
       dia: body.dia,
